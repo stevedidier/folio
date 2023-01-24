@@ -6,7 +6,7 @@ import lombok.Data;
 public class PwdPattern {
     
     private static final String PASSWORD_REGEX =
-    "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$";
+    "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
 
     private static final String COMPLEX_PASSWORD_REGEX =
     "^(?:(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])|" +

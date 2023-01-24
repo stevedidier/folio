@@ -33,8 +33,8 @@ public class UserController {
     }
 
     @PostMapping("/api/v1/admin/users")
-    public ResponseEntity createUser(@RequestHeader HttpHeaders header, @Valid @RequestBody UserDto userDto) {
-        service.addUser(userDto);
+    public ResponseEntity createUser(@RequestHeader HttpHeaders header, @Valid @RequestBody UserPost userPost) {
+        service.addUser(userPost);
         return ResponseEntity.ok().build();
     }
 

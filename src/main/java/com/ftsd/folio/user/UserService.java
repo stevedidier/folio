@@ -37,7 +37,7 @@ public class UserService {
 }
   
 
-  public void addUser(UserDto request) {
+  public void addUser(UserPost request) {
 
     if (PwdPattern.pwdValidate(request.getPassword())){
 
