@@ -10,8 +10,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 
 @Service
 @RequiredArgsConstructor
@@ -20,24 +24,39 @@ public class UserService {
   private final UserRepository repository;
   private final PasswordEncoder passwordEncoder;
   private final AuthenticationManager authenticationManager;
+
+  
+  
   
 
-  public List<User> getAllUsers(){
+  public List<UserListDto> getAllUsers(){
 
-    return repository.findAll();
+    
+    List<UserListDto> userList = new ArrayList<UserListDto>();
+
+    for (User user : repository.findAll()) {
+
+      userList.add(Mappers.toListDto(user));
+      
+    }
+
+   
+
+    return userList;
   }
 
-  public UserDto getUsersId(Integer userId){
+  public UserDetailDto getUsersId(Integer userId){
+    
 
     User user = repository.findById(userId)
             .orElseThrow(() -> new ResourceNotFoundException("Not found User with id = " + userId));
 
     
-    return Mappers.toDto(user);
+    return Mappers.toDetailDto(user);
 }
   
 
-  public void addUser(UserPost request) {
+  public void addUser(UserPostDto request) {
 
     if (PwdPattern.pwdValidate(request.getPassword())){
 
@@ -59,18 +78,31 @@ public class UserService {
    
   } 
 
-  public void update(UserDto userRequest, Integer userId){
+  public void update(UserDetailDto userRequest, Integer userId){
 
-    Integer id = repository.findById(userId).map(user -> {
-            user.setFirstname(userRequest.getFirstname());
-            user.setLastname(userRequest.getLastname());
-            user.setEmail(userRequest.getEmail());
-            user.setUpdatedAt(new Date());
-            repository.save(user);
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-            return user.getId();
+    User  username = (User) auth.getPrincipal();
+    int cond = username.getId() - userId;
 
-        }).orElseThrow(() -> new ResourceNotFoundException("UserId " + userId + " not found"));
+    if(cond == 0){
+
+      Integer id = repository.findById(userId).map(user -> {
+        user.setFirstname(userRequest.getFirstname());
+        user.setLastname(userRequest.getLastname());
+        user.setEmail(userRequest.getEmail());
+        user.setUpdatedAt(new Date());
+        repository.save(user);
+
+        return user.getId();
+
+    }).orElseThrow(() -> new ResourceNotFoundException("UserId " + userId + " not found"));
+
+    }else{
+      System.out.println(username.getId() + " not match "+ userId);
+    }
+
+    
   }
 
   public void delete(Integer userId){
@@ -81,17 +113,25 @@ public class UserService {
     }).orElseThrow(() -> new ResourceNotFoundException("UserId " + userId + " not found"));
  }
 
- public void changePassword(RequestPassword request, Integer userId){
+ public void changePassword(RequestPasswordDto request, Integer userId){
 
-    Integer id = repository.findById(userId).map(user -> {
-      
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+    User  username = (User) auth.getPrincipal();
+
+    int cond = username.getId() - userId;
+
+    if(cond == 0){
+
+              Integer id = repository.findById(userId).map(user -> {
+              
                 authenticationManager.authenticate(
                   new UsernamePasswordAuthenticationToken(
                     user.getEmail(),
                       request.getOldPassword()
                   )
                 );
-           
+          
                 user.setPassword(passwordEncoder.encode(request.getNewPassword()));
                 user.setUpdatedAt(new Date());
                 repository.save(user);
@@ -99,16 +139,23 @@ public class UserService {
             return user.getId();
 
         }).orElseThrow(() -> new ResourceNotFoundException("UserId " + userId + " not found"));
+
+    }else{
+      System.out.println(username.getId() + "  Not match  "+ userId);
+    }
+
+
+    
   }
 
-  public void changeRole(String requestRole, Integer userId){
+  public void changeRole(RoleRequestDto requestRole, Integer userId){
     
     Integer id = repository.findById(userId).map(user -> {
-            if(requestRole == Role.ADMIN.name()){
+            if(requestRole.getRole().equalsIgnoreCase(Role.ADMIN.name()) ){
                 user.setRole(Role.ADMIN);
                 user.setUpdatedAt(new Date());
                 repository.save(user);
-            }else if(requestRole == Role.USER.name()){
+            }else if(requestRole.getRole().equalsIgnoreCase(Role.USER.name()) ){
                 user.setRole(Role.USER);
                 user.setUpdatedAt(new Date());
                 repository.save(user);

@@ -10,12 +10,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+public class RequestPasswordDto {
 
-public class UserPost {
+    private String oldPassword;
+    private String newPassword;
 
-  private String firstname;
-  private String lastname;
-  private String email;
-  private String password;
     
 }
