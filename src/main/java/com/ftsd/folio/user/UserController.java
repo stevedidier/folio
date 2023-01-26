@@ -15,7 +15,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class UserController {
 
