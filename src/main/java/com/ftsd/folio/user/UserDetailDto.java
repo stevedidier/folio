@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @NoArgsConstructor
 
 public class UserDetailDto {
+  private Integer id;
   private String firstname;
   private String lastname;
   private String email;

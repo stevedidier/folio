@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Data
 @Builder
@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @NoArgsConstructor
 
 public class UserListDto {
-
+  private Integer id;
   private String firstname;
   private String lastname;
   private String email;

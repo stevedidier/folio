@@ -1,6 +1,6 @@
 package com.ftsd.folio.config;
 
-import jakarta.servlet.Filter;
+//import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,10 +18,12 @@ public class SecurityConfiguration {
 
   private final JwtAuthenticationFilter jwtAuthFilter;
   private final AuthenticationProvider authenticationProvider;
+  private final AuthEntryPointJwt unauthorizedHandler;
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
+        .cors().and()
         .csrf() 
         .disable()  
         .authorizeHttpRequests()
@@ -32,6 +34,7 @@ public class SecurityConfiguration {
         .anyRequest()
         .authenticated()
         .and()
+        .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()

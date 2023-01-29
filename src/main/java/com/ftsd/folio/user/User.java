@@ -1,13 +1,13 @@
 package com.ftsd.folio.user;
 
 import com.ftsd.folio.util.*;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
+//import jakarta.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -33,6 +33,9 @@ public class User extends AuditModel implements UserDetails {
   private String firstname;
   private String lastname;
   private String email;
+
+  @Column(name = "reset_password_token")
+  private String resetPasswordToken;
   
   @JsonIgnore
   private String password;

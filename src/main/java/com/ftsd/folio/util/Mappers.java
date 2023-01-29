@@ -9,6 +9,7 @@ public class Mappers {
     public static UserDetailDto toDetailDto(User user) {
 
         UserDetailDto userDto = new UserDetailDto();
+        userDto.setId(user.getId());
         userDto.setEmail(user.getEmail());
         userDto.setFirstname(user.getFirstname());
         userDto.setLastname(user.getLastname());
@@ -21,6 +22,7 @@ public class Mappers {
      public static UserListDto toListDto(User user) {
 
         UserListDto userDto = new UserListDto();
+        userDto.setId(user.getId());
         userDto.setEmail(user.getEmail());
         userDto.setFirstname(user.getFirstname());
         userDto.setLastname(user.getLastname());

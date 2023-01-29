@@ -14,4 +14,8 @@ public class AuthenticationResponse {
   private String token;
   private Integer idUser;  
   private String role;
+  private String username;
+  private String email;
+  private String type ;
+  private boolean badCredentials;
 }
