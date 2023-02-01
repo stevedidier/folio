@@ -3,18 +3,29 @@ package com.ftsd.folio;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+//import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+
+import com.ftsd.folio.image.FileStorageService;
+
 import java.util.Properties;
+import java.io.File;
+
 
 //import org.springframework.web.servlet.config.annotation.CorsRegistry;
 //import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
+@ComponentScan({"com.ftsd.folio", "image"})
+// @EnableConfigurationProperties({
+// 	FileStorageProperties.class
+// })
 public class FolioApplication {
 
 	public static void main(String[] args) {
-		
+		new File(FileStorageService.uploadDirectory).mkdir();
 		SpringApplication.run(FolioApplication.class, args);
 	}
 
@@ -24,8 +35,8 @@ public class FolioApplication {
 		mailSender.setHost("smtp.gmail.com");
 		mailSender.setPort(587);
 		
-		mailSender.setUsername("email");
-		mailSender.setPassword("password");
+		mailSender.setUsername("your email");
+		mailSender.setPassword("your password");
 		
 		Properties props = mailSender.getJavaMailProperties();
 		props.put("mail.transport.protocol", "smtp");

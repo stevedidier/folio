@@ -25,11 +25,6 @@ public class UserService {
   
   private final UserRepository repository;
   private final PasswordEncoder passwordEncoder;
-  
-
-  
-  
-  
 
   public List<UserListDto> getAllUsers(){
 
@@ -41,8 +36,6 @@ public class UserService {
       userList.add(Mappers.toListDto(user));
       
     }
-
-   
 
     return userList;
   }

@@ -15,22 +15,17 @@ spring:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+  http:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 11MB
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB
 
 server:
   port: 8888
 
-mail:
-    host: smtp.gmail.com
-    username: email
-    password: password
-    port: 587
-    properties:
-      mail:
-        smtp:
-          auth: true
-          connectiontimeout: 5000
-          timeout: 5000
-          writetimeout: 5000
-
-          starttls:
-            enable: true

@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class User extends AuditModel implements UserDetails {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue 
   private Integer id;
   private String firstname;
   private String lastname;
